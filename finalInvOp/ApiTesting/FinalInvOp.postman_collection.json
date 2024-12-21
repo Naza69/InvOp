@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "8567d540-98fa-4b41-9da5-04f2c4259e4e",
+		"name": "FinalInvOp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35123194",
+		"_collection_link": "https://nazateam.postman.co/workspace/e53adc85-fc2e-440e-b2e6-94ee580f80e2/collection/35123194-8567d540-98fa-4b41-9da5-04f2c4259e4e?action=share&source=collection_link&creator=35123194"
+	},
+	"item": [
+		{
+			"name": "https://goldfish-app-pyi2v.ondigitalocean.app/api/v1/users/1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// El valor de este test es tambien, estandar. Con el codigo de estado 200 se verifica que la solicitud completa haya sido exitosa\r",
+							"pm.test(\"Estado 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Se comprueba la propiedad id del paquete recibido por si se le quiere dar otras aplicaciones practicas, como el pase a un servidor web, o recavar datos para un login\r",
+							"pm.test(\"Comprobando propiedad ID\", function() {\r",
+							"    let jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData).to.have.property(\"id\")\r",
+							"})\r",
+							"\r",
+							"// Se comprueba la propiedad email del paquete recibido por si se necesita, por ejemplo, para el uso en un inicio de sesion\r",
+							"pm.test(\"Direccion de correo\", function () {\r",
+							"    let jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData).to.have.property(\"email\")\r",
+							"});\r",
+							"\r",
+							"// Al validar las propiedades `lat` y `lng` se asegura que los datos geográficos del usuario están presentes y correctamente estructurados. por si se quiere usar para aplicaciones que dependen de la localización, como mapas, logística, o servicios basados en ubicación. \r",
+							"pm.test(\"Hay lang y lat en geo?\", function() {\r",
+							"    let geo = pm.response.json().address.geo;\r",
+							"\r",
+							"    pm.expect(geo).to.have.property(\"lat\");\r",
+							"    pm.expect(geo).to.have.property(\"lng\");\r",
+							"\r",
+							"    pm.expect(geo.lat).to.be.a(\"string\").and.to.not.be.empty;\r",
+							"    pm.expect(geo.lng).to.be.a(\"string\").and.to.not.be.empty;\r",
+							"\r",
+							"    pm.expect(Number(geo.lat)).to.be.a(\"number\");\r",
+							"    pm.expect(Number(geo.lng)).to.be.a(\"number\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://goldfish-app-pyi2v.ondigitalocean.app/api/v1/users/1",
+					"protocol": "https",
+					"host": [
+						"goldfish-app-pyi2v",
+						"ondigitalocean",
+						"app"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://goldfish-app-pyi2v.ondigitalocean.app/api/v1/student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"// El valor de este test es estandar, con el codigo de estado 201\r",
+							"// se verifica la creacion del paquete de datos en la direccion\r",
+							"\r",
+							"pm.test(\"Estado de codigo 201\", function() {\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"\r",
+							"\r",
+							"// Se verifica cual ha sido el valor de la propiedad message segun\r",
+							"// el valor de entrada unico del legajo, parece cambiar con cada \r",
+							"// legajo\r",
+							"pm.test(\"Que tiene el message\", function(){\r",
+							"    let jsonData = pm.response.json()\r",
+							"\r",
+							"    pm.expect(jsonData.message).to.equal(\"Your username is 9f1a1527ae7840e0732cb47060f650e1\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"legajo\": \"51539\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://goldfish-app-pyi2v.ondigitalocean.app/api/v1/student",
+					"protocol": "https",
+					"host": [
+						"goldfish-app-pyi2v",
+						"ondigitalocean",
+						"app"
+					],
+					"path": [
+						"api",
+						"v1",
+						"student"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
